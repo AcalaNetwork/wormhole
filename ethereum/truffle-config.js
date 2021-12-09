@@ -1,32 +1,19 @@
 require('dotenv').config({ path: ".env" });
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
+const mandalaConfig = endpointUrl => ({
+    provider: () => new HDWalletProvider(process.env.MNEMONIC, endpointUrl),
+    network_id: 595,
+    gasPrice: 200786445289, // storage_limit = 64001, validUntil = 360001, gasLimit = 10000000
+    gas: 42032000,
+    timeoutBlocks: 25,
+    confirmations: 0,
+});
+
 module.exports = {
     networks: {
-        mandala: {
-            provider: () =>
-                new HDWalletProvider(
-                    process.env.MNEMONIC,
-                    'http://127.0.0.1:8545'
-                ),
-            network_id: 595,
-            gasPrice: 200786445289, // storage_limit = 64001, validUntil = 360001, gasLimit = 10000000
-            gas: 42032000,
-            timeoutBlocks: 25,
-            confirmations: 0
-        },
-        mandalaPub: {
-            provider: () =>
-                new HDWalletProvider(
-                    process.env.MNEMONIC,
-                    'https://tc7-eth.aca-dev.network'
-                ),
-            network_id: 595,
-            gasPrice: 200786445289, // storage_limit = 64001, validUntil = 360001, gasLimit = 10000000
-            gas: 42032000,
-            timeoutBlocks: 25,
-            confirmations: 0
-        },
+        mandala: mandalaConfig('http://127.0.0.1:8545'),
+        mandalaPub: mandalaConfig('https://tc7-eth.aca-dev.network'),
         development: {
             host: "127.0.0.1",
             port: 8545,
