@@ -18,8 +18,11 @@
   },
   "scripts": {
     "build": "truffle compile",
-    "test": "mkdir -p build/contracts && cp node_modules/@openzeppelin/contracts/build/contracts/* build/contracts/ && truffle test",
-    "migrate": "mkdir -p build/contracts && cp node_modules/@openzeppelin/contracts/build/contracts/* build/contracts/ && truffle migrate"
+    "copy": "mkdir -p build/contracts && cp node_modules/@openzeppelin/contracts/build/contracts/* build/contracts/",
+    "test": "yarn copy && truffle test --network mandala",
+    "migrate": "yarn copy && truffle migrate --network mandala",
+    "test:pub": "yarn copy && truffle test --network mandalaPub",
+    "migrate:pub": "yarn copy && truffle migrate --network mandalaPub"
   },
   "author": "",
   "license": "ISC",

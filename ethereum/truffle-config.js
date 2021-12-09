@@ -3,6 +3,30 @@ const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 module.exports = {
     networks: {
+        mandala: {
+            provider: () =>
+                new HDWalletProvider(
+                    process.env.MNEMONIC,
+                    'http://127.0.0.1:8545'
+                ),
+            network_id: 595,
+            gasPrice: 200786445289, // storage_limit = 64001, validUntil = 360001, gasLimit = 10000000
+            gas: 42032000,
+            timeoutBlocks: 25,
+            confirmations: 0
+        },
+        mandalaPub: {
+            provider: () =>
+                new HDWalletProvider(
+                    process.env.MNEMONIC,
+                    'https://tc7-eth.aca-dev.network'
+                ),
+            network_id: 595,
+            gasPrice: 200786445289, // storage_limit = 64001, validUntil = 360001, gasLimit = 10000000
+            gas: 42032000,
+            timeoutBlocks: 25,
+            confirmations: 0
+        },
         development: {
             host: "127.0.0.1",
             port: 8545,

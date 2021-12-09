@@ -1,4 +1,49 @@
-# Wormhole bridge - ETH
+# Wormhole bridge - ETH (Acala test version)
+## run
+- install dependencies
+```
+yarn
+```
+
+- build contracts
+```
+yarn build
+```
+
+- deploy contracts
+```
+yarn migrate
+yarn migrate:pub
+```
+
+- run tests
+```
+yarn test
+yarn test:pub
+```
+
+## gas price / gas limit
+If we want to change gas price or gas limit, we need to manually calculate the eth params like this, and put them into the config.
+```ts
+import { calcEthereumTransactionParams } from '@acala-network/eth-providers';
+
+const TX_FEE_PER_GAS = '199999946752';
+const STORAGE_BYTE_DEPOSIT = '100000000000000';
+
+const { txGasPrice, txGasLimit } = calcEthereumTransactionParams({
+  gasLimit: '10000000',
+  validUntil: '360001',
+  storageLimit: '64001',
+  txFeePerGas: TX_FEE_PER_GAS,
+  storageByteDeposit: STORAGE_BYTE_DEPOSIT,
+});
+
+// in this example, we will get:
+// txGasPrice = 200786445289 
+// txGasLimit = 42032000
+```
+
+## \#\#\#\#\# below are original README \#\#\#\#\#
 
 These smart contracts allow to use Ethereum as foreign chain in the Wormhole protocol.
 
