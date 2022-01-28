@@ -20,8 +20,11 @@
   "scripts": {
     "build": "truffle compile",
     "test": "mkdir -p build/contracts && cp node_modules/@openzeppelin/contracts/build/contracts/* build/contracts/ && truffle test",
-    "migrate": "mkdir -p build/contracts && cp node_modules/@openzeppelin/contracts/build/contracts/* build/contracts/ && truffle migrate",
-    "flatten": "mkdir -p node_modules/@poanet/solidity-flattener/contracts && cp -r contracts/* node_modules/@poanet/solidity-flattener/contracts/ && poa-solidity-flattener"
+    "migrate": "mkdir -p build/contracts && cp node_modules/@openzeppelin/contracts/build/contracts/* build/contracts/ && truffle migrate && && truffle exec scripts/deploy_test_token_mandala.js",
+    "migrate:BSC": "mkdir -p build/contracts && cp node_modules/@openzeppelin/contracts/build/contracts/* build/contracts/ && truffle migrate --network development2 && truffle exec scripts/deploy_test_token.js --network development2",
+    "flatten": "mkdir -p node_modules/@poanet/solidity-flattener/contracts && cp -r contracts/* node_modules/@poanet/solidity-flattener/contracts/ && poa-solidity-flattener",
+    "register": "truffle exec scripts/register_eth_chain.js && truffle exec scripts/register_bsc_chain.js",
+    "register:BSC": "truffle exec scripts/register_eth_chain.js --network development2 && truffle exec scripts/register_bsc_chain.js --network development2"
   },
   "author": "",
   "license": "ISC",
