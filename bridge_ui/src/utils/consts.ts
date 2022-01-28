@@ -228,7 +228,8 @@ export const AVAX_NETWORK_CHAIN_ID =
   CLUSTER === "mainnet" ? 43114 : CLUSTER === "testnet" ? 43113 : 1381;
 export const OASIS_NETWORK_CHAIN_ID =
   CLUSTER === "mainnet" ? 42262 : CLUSTER === "testnet" ? 42261 : 1381;
-export const KARURA_CHAIN_ID = 595;
+export const KARURA_CHAIN_ID = 
+  CLUSTER === "mainnet" ? 686 : CLUSTER === "testnet" ? 686 : 595;
 
 export const getEvmChainId = (chainId: ChainId) =>
   chainId === CHAIN_ID_ETH
