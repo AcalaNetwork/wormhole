@@ -8,6 +8,7 @@ import {
   CHAIN_ID_SOLANA,
   CHAIN_ID_TERRA,
   CHAIN_ID_OASIS,
+  CHAIN_ID_KARURA,
   isEVMChain,
 } from "@certusone/wormhole-sdk";
 import { clusterApiUrl } from "@solana/web3.js";
@@ -19,6 +20,9 @@ import oasisIcon from "../icons/oasis-network-rose-logo.svg";
 import polygonIcon from "../icons/polygon.svg";
 import solanaIcon from "../icons/solana.svg";
 import terraIcon from "../icons/terra.svg";
+import KaruraIcon from "../icons/karura.svg";
+
+const DUMMY_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 export type Cluster = "devnet" | "testnet" | "mainnet";
 export const CLUSTER: Cluster =
@@ -70,6 +74,11 @@ export const CHAINS: ChainInfo[] =
           name: "Terra",
           logo: terraIcon,
         },
+        {
+          id: CHAIN_ID_KARURA,
+          name: "Karura",
+          logo: KaruraIcon,
+        },
       ]
     : CLUSTER === "testnet"
     ? [
@@ -113,6 +122,11 @@ export const CHAINS: ChainInfo[] =
           name: "Terra",
           logo: terraIcon,
         },
+        {
+          id: CHAIN_ID_KARURA,
+          name: "Karura",
+          logo: KaruraIcon,
+        },
       ]
     : [
         {
@@ -134,6 +148,11 @@ export const CHAINS: ChainInfo[] =
           id: CHAIN_ID_TERRA,
           name: "Terra",
           logo: terraIcon,
+        },
+        {
+          id: CHAIN_ID_KARURA,
+          name: "Karura",
+          logo: KaruraIcon,
         },
       ];
 export const BETA_CHAINS: ChainId[] = CLUSTER === "mainnet" ? [] : [];
@@ -169,6 +188,8 @@ export const getDefaultNativeCurrencySymbol = (chainId: ChainId) =>
     ? "AVAX"
     : chainId === CHAIN_ID_OASIS
     ? "ROSE"
+    : chainId === CHAIN_ID_KARURA
+    ? "ACA"
     : "";
 export const getExplorerName = (chainId: ChainId) =>
   chainId === CHAIN_ID_ETH || chainId === CHAIN_ID_ETHEREUM_ROPSTEN
@@ -207,6 +228,8 @@ export const AVAX_NETWORK_CHAIN_ID =
   CLUSTER === "mainnet" ? 43114 : CLUSTER === "testnet" ? 43113 : 1381;
 export const OASIS_NETWORK_CHAIN_ID =
   CLUSTER === "mainnet" ? 42262 : CLUSTER === "testnet" ? 42261 : 1381;
+export const KARURA_CHAIN_ID = 595;
+
 export const getEvmChainId = (chainId: ChainId) =>
   chainId === CHAIN_ID_ETH
     ? ETH_NETWORK_CHAIN_ID
@@ -220,6 +243,8 @@ export const getEvmChainId = (chainId: ChainId) =>
     ? AVAX_NETWORK_CHAIN_ID
     : chainId === CHAIN_ID_OASIS
     ? OASIS_NETWORK_CHAIN_ID
+    : chainId === CHAIN_ID_KARURA
+    ? KARURA_CHAIN_ID
     : undefined;
 export const SOLANA_HOST = process.env.REACT_APP_SOLANA_API_URL
   ? process.env.REACT_APP_SOLANA_API_URL
@@ -288,6 +313,27 @@ export const BSC_TOKEN_BRIDGE_ADDRESS = getAddress(
     : CLUSTER === "testnet"
     ? "0x9dcF9D205C9De35334D646BeE44b2D2859712A09"
     : "0x0290FB167208Af455bB137780163b7B7a9a10C16"
+);
+export const KARURA_BRIDGE_ADDRESS = getAddress(
+  CLUSTER === "mainnet"
+    ? DUMMY_ADDRESS
+    : CLUSTER === "testnet"
+      ? DUMMY_ADDRESS
+      : "0xC89Ce4735882C9F0f0FE26686c53074E09B0D550"
+);
+export const KARURA_NFT_BRIDGE_ADDRESS = getAddress(
+  CLUSTER === "mainnet"
+    ? DUMMY_ADDRESS
+    : CLUSTER === "testnet"
+      ? DUMMY_ADDRESS
+      : DUMMY_ADDRESS
+);
+export const KARURA_TOKEN_BRIDGE_ADDRESS = getAddress(
+  CLUSTER === "mainnet"
+    ? DUMMY_ADDRESS
+    : CLUSTER === "testnet"
+      ? DUMMY_ADDRESS
+      : "0x0290FB167208Af455bB137780163b7B7a9a10C16"
 );
 export const POLYGON_BRIDGE_ADDRESS = getAddress(
   CLUSTER === "mainnet"
@@ -428,6 +474,8 @@ export const getBridgeAddressForChain = (chainId: ChainId) =>
     ? AVAX_BRIDGE_ADDRESS
     : chainId === CHAIN_ID_OASIS
     ? OASIS_BRIDGE_ADDRESS
+    : chainId === CHAIN_ID_KARURA
+    ? KARURA_BRIDGE_ADDRESS
     : "";
 export const getNFTBridgeAddressForChain = (chainId: ChainId) =>
   chainId === CHAIN_ID_SOLANA
@@ -444,6 +492,8 @@ export const getNFTBridgeAddressForChain = (chainId: ChainId) =>
     ? AVAX_NFT_BRIDGE_ADDRESS
     : chainId === CHAIN_ID_OASIS
     ? OASIS_NFT_BRIDGE_ADDRESS
+    : chainId === CHAIN_ID_KARURA
+    ? KARURA_NFT_BRIDGE_ADDRESS
     : "";
 export const getTokenBridgeAddressForChain = (chainId: ChainId) =>
   chainId === CHAIN_ID_SOLANA
@@ -462,6 +512,8 @@ export const getTokenBridgeAddressForChain = (chainId: ChainId) =>
     ? AVAX_TOKEN_BRIDGE_ADDRESS
     : chainId === CHAIN_ID_OASIS
     ? OASIS_TOKEN_BRIDGE_ADDRESS
+    : chainId === CHAIN_ID_KARURA
+    ? KARURA_TOKEN_BRIDGE_ADDRESS
     : "";
 
 export const COVALENT_API_KEY = process.env.REACT_APP_COVALENT_API_KEY
