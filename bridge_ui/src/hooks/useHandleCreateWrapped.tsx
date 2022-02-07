@@ -59,9 +59,9 @@ async function getKaruraGasParams(): Promise<{
   const blockNumber = (await api.rpc.chain.getHeader()).number.toNumber();
 
   const ethParams = calcEthereumTransactionParams({
-    gasLimit: '21000000',
-    validUntil: (blockNumber + 100).toString(),
-    storageLimit: '64001',
+    gasLimit: 21000000,
+    validUntil: blockNumber + 100,
+    storageLimit: 64001,
     txFeePerGas,
     storageByteDeposit,
   });
@@ -82,11 +82,11 @@ async function evm(
 ) {
   dispatch(setIsCreating(true));
 
-  const deployOverwrites = chainId === CHAIN_ID_KARURA
+  const txGasOverrides = chainId === CHAIN_ID_KARURA
     ? await getKaruraGasParams()
     : {};
 
-  console.log(deployOverwrites);
+  console.log(txGasOverrides);
 
   try {
     const receipt = shouldUpdate
@@ -94,13 +94,13 @@ async function evm(
           getTokenBridgeAddressForChain(chainId),
           signer,
           signedVAA,
-          deployOverwrites
+          txGasOverrides
         )
       : await createWrappedOnEth(
           getTokenBridgeAddressForChain(chainId),
           signer,
           signedVAA,
-          deployOverwrites
+          txGasOverrides
         );
     dispatch(
       setCreateTx({ id: receipt.transactionHash, block: receipt.blockNumber })
