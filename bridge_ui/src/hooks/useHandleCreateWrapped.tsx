@@ -10,6 +10,7 @@ import {
   updateWrappedOnSolana,
   postVaaSolanaWithRetry,
   isEVMChain,
+  CHAIN_ID_KARURA,
 } from "@certusone/wormhole-sdk";
 import { WalletContextState } from "@solana/wallet-adapter-react";
 import { Connection } from "@solana/web3.js";
@@ -19,6 +20,8 @@ import {
 } from "@terra-money/wallet-provider";
 import { Signer } from "ethers";
 import { useSnackbar } from "notistack";
+import { calcEthereumTransactionParams } from '@acala-network/eth-providers';
+import { ApiPromise, WsProvider } from '@polkadot/api';
 import { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEthereumProvider } from "../contexts/EthereumProviderContext";
@@ -43,6 +46,32 @@ import { signSendAndConfirm } from "../utils/solana";
 import { Alert } from "@material-ui/lab";
 import { postWithFees } from "../utils/terra";
 
+async function getKaruraGasParams(): Promise<{
+  gasPrice: number,
+  gasLimit: number,
+}> {
+  const MANDALA_URL = 'wss://node-6870830370282213376.rz.onfinality.io/ws?apikey=0f273197-e4d5-45e2-b23e-03b015cb7000';
+  const wsProvider = new WsProvider(MANDALA_URL);
+  const api = await ApiPromise.create({ provider: wsProvider });
+
+  const storageByteDeposit = (api.consts.evm.storageDepositPerByte).toString();
+  const txFeePerGas = (api.consts.evm.txFeePerGas).toString();
+  const blockNumber = (await api.rpc.chain.getHeader()).number.toNumber();
+
+  const ethParams = calcEthereumTransactionParams({
+    gasLimit: '21000000',
+    validUntil: (blockNumber + 100).toString(),
+    storageLimit: '64001',
+    txFeePerGas,
+    storageByteDeposit,
+  });
+
+  return {
+    gasPrice: ethParams.txGasPrice.toNumber(),
+    gasLimit: ethParams.txGasLimit.toNumber(),
+  }
+};
+
 async function evm(
   dispatch: any,
   enqueueSnackbar: any,
@@ -52,17 +81,26 @@ async function evm(
   shouldUpdate: boolean
 ) {
   dispatch(setIsCreating(true));
+
+  const deployOverwrites = chainId === CHAIN_ID_KARURA
+    ? await getKaruraGasParams()
+    : {};
+
+  console.log(deployOverwrites);
+
   try {
     const receipt = shouldUpdate
       ? await updateWrappedOnEth(
           getTokenBridgeAddressForChain(chainId),
           signer,
-          signedVAA
+          signedVAA,
+          deployOverwrites
         )
       : await createWrappedOnEth(
           getTokenBridgeAddressForChain(chainId),
           signer,
-          signedVAA
+          signedVAA,
+          deployOverwrites
         );
     dispatch(
       setCreateTx({ id: receipt.transactionHash, block: receipt.blockNumber })
