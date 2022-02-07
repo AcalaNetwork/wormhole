@@ -10,6 +10,7 @@ import {
   updateWrappedOnSolana,
   postVaaSolanaWithRetry,
   isEVMChain,
+  getEmitterAddressEth,
 } from "@certusone/wormhole-sdk";
 import { WalletContextState } from "@solana/wallet-adapter-react";
 import { Connection } from "@solana/web3.js";
@@ -37,11 +38,15 @@ import {
   SOL_BRIDGE_ADDRESS,
   SOL_TOKEN_BRIDGE_ADDRESS,
   TERRA_TOKEN_BRIDGE_ADDRESS,
+  ETH_TOKEN_BRIDGE_ADDRESS,
 } from "../utils/consts";
 import parseError from "../utils/parseError";
 import { signSendAndConfirm } from "../utils/solana";
 import { Alert } from "@material-ui/lab";
 import { postWithFees } from "../utils/terra";
+import { importCoreWasm } from "@certusone/wormhole-sdk/lib/esm/solana/wasm";
+import { uint8ArrayToNative } from "@certusone/wormhole-sdk/lib/esm";
+
 
 async function evm(
   dispatch: any,
@@ -51,6 +56,16 @@ async function evm(
   chainId: ChainId,
   shouldUpdate: boolean
 ) {
+  console.log('create wrapped asset:', {
+    chainId, 
+    bridgeAddr: getTokenBridgeAddressForChain(chainId),
+    emitterAddr: getEmitterAddressEth(ETH_TOKEN_BRIDGE_ADDRESS),
+  });
+  const { parse_vaa } = await importCoreWasm();
+  const parsed = parse_vaa(signedVAA)
+  console.log(parsed.emitter_address);
+  console.log(uint8ArrayToNative(parsed.emitter_address, parsed.emitter_chain));
+
   dispatch(setIsCreating(true));
   try {
     const receipt = shouldUpdate

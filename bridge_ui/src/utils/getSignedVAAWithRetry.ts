@@ -12,6 +12,7 @@ export async function getSignedVAAWithRetry(
   sequence: string,
   retryAttempts?: number
 ) {
+  console.log('getSignedVAAWithRetry: ', emitterChain, emitterAddress);
   let result;
   let attempts = 0;
   while (!result) {
