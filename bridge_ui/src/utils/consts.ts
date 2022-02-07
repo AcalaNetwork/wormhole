@@ -624,6 +624,8 @@ export const WORMHOLE_V1_MINT_AUTHORITY =
     ? "BJa7dq3bRP216zaTdw4cdcV71WkPc1HXvmnGeFVDi5DC"
     : "";
 
+export const WKAR_ADDRESS = '0x0000000000000000000100000000000000000000';
+
 // hardcoded addresses for warnings
 export const SOLANA_TOKENS_THAT_EXIST_ELSEWHERE = [
   "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt", //  SRM

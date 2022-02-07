@@ -7,6 +7,7 @@ import {
   CHAIN_ID_POLYGON,
   CHAIN_ID_SOLANA,
   CHAIN_ID_TERRA,
+  CHAIN_ID_KARURA,
   isEVMChain,
   WSOL_ADDRESS,
 } from "@certusone/wormhole-sdk";
@@ -36,6 +37,7 @@ import {
   WETH_ADDRESS,
   WMATIC_ADDRESS,
   WROSE_ADDRESS,
+  WKAR_ADDRESS,
 } from "../../utils/consts";
 import ButtonWithLoader from "../ButtonWithLoader";
 import KeyAndBalance from "../KeyAndBalance";
@@ -94,6 +96,10 @@ function Redeem() {
     targetChain === CHAIN_ID_SOLANA &&
     targetAsset &&
     targetAsset === WSOL_ADDRESS;
+  const isKaruraNative =
+    targetChain === CHAIN_ID_KARURA &&
+    targetAsset &&
+    targetAsset === WKAR_ADDRESS;
   const isNativeEligible =
     isEthNative ||
     isEthRopstenNative ||
@@ -101,7 +107,8 @@ function Redeem() {
     isPolygonNative ||
     isAvaxNative ||
     isOasisNative ||
-    isSolNative;
+    isSolNative ||
+    isKaruraNative;
   const [useNativeRedeem, setUseNativeRedeem] = useState(true);
   const toggleNativeRedeem = useCallback(() => {
     setUseNativeRedeem(!useNativeRedeem);

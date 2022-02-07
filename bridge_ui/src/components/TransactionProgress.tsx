@@ -76,7 +76,7 @@ export default function TransactionProgress({
       : chainId === CHAIN_ID_SOLANA
       ? 32
       : isEVMChain(chainId)
-      ? 3
+      ? 15
       : 1;
   if (
     !isSendComplete &&
