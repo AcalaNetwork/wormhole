@@ -1,5 +1,6 @@
 import {
   ChainId,
+  CHAIN_ID_KARURA,
   CHAIN_ID_SOLANA,
   CHAIN_ID_TERRA,
   isEVMChain,
@@ -18,6 +19,7 @@ import {
 } from "@terra-money/wallet-provider";
 import { Signer } from "ethers";
 import { useSnackbar } from "notistack";
+import axios from "axios";
 import { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEthereumProvider } from "../contexts/EthereumProviderContext";
@@ -27,6 +29,7 @@ import {
   selectTerraFeeDenom,
   selectTransferIsRedeeming,
   selectTransferTargetChain,
+  selectTransferSignedVAAHex
 } from "../store/selectors";
 import { setIsRedeeming, setRedeemTx } from "../store/transferSlice";
 import {
@@ -173,6 +176,7 @@ export function useHandleRedeem() {
   const terraWallet = useConnectedWallet();
   const terraFeeDenom = useSelector(selectTerraFeeDenom);
   const signedVAA = useTransferSignedVAA();
+  const signedVAAHex = useSelector(selectTransferSignedVAAHex);
   const isRedeeming = useSelector(selectTransferIsRedeeming);
   const handleRedeemClick = useCallback(() => {
     if (isEVMChain(targetChain) && !!signer && signedVAA) {
@@ -240,13 +244,50 @@ export function useHandleRedeem() {
     terraFeeDenom,
   ]);
 
+  const handleRelayerRedeemClick = useCallback(async () => {
+    // currently only support karura
+    if (targetChain !== CHAIN_ID_KARURA || !signer || !signedVAA) return;
+
+    dispatch(setIsRedeeming(true));
+
+    try {
+      const RELAYER_ENDPOINT_URL = "http://localhost:3111/relay";   // TODO: move to const?
+      const res = await axios.post(RELAYER_ENDPOINT_URL, {
+        signedVAA: signedVAAHex,
+        chainId: targetChain,
+        unwrapNative: false,
+      });
+
+      dispatch(
+        setRedeemTx({ id: res.data.transactionHash, block: res.data.blockNumber })
+      );
+      enqueueSnackbar(null, {
+        content: <Alert severity="success">Transaction confirmed</Alert>,
+      });
+    } catch (e) {
+      enqueueSnackbar(null, {
+        content: <Alert severity="error">{parseError(e)}</Alert>,
+      });
+      dispatch(setIsRedeeming(false));
+    }
+
+  }, [
+    targetChain,
+    signer,
+    signedVAA,
+    signedVAAHex,
+    enqueueSnackbar,
+    dispatch,
+  ]);
+
   return useMemo(
     () => ({
       handleNativeClick: handleRedeemNativeClick,
       handleClick: handleRedeemClick,
+      handleRelayerRedeemClick,
       disabled: !!isRedeeming,
       showLoader: !!isRedeeming,
     }),
-    [handleRedeemClick, isRedeeming, handleRedeemNativeClick]
+    [handleRedeemClick, isRedeeming, handleRedeemNativeClick, handleRelayerRedeemClick]
   );
 }

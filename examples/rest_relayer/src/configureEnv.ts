@@ -22,6 +22,7 @@ export function validateEnvironment(): RelayerEnvironment {
   supportedChains.push(configEth());
   supportedChains.push(configBsc());
   supportedChains.push(configTerra());
+  supportedChains.push(configKarura());
 
   return { supportedChains };
 }
@@ -67,6 +68,28 @@ function configBsc(): ChainConfigInfo {
     nodeUrl: process.env.BSC_NODE_URL,
     walletPrivateKey: process.env.BSC_PRIVATE_KEY,
     tokenBridgeAddress: process.env.BSC_TOKEN_BRIDGE_ADDRESS,
+  };
+}
+
+function configKarura(): ChainConfigInfo {
+  if (!process.env.KARURA_NODE_URL) {
+    console.error("Missing environment variable KARURA_NODE_URL");
+    process.exit(1);
+  }
+  if (!process.env.KARURA_PRIVATE_KEY) {
+    console.error("Missing environment variable KARURA_PRIVATE_KEY");
+    process.exit(1);
+  }
+  if (!process.env.KARURA_TOKEN_BRIDGE_ADDRESS) {
+    console.error("Missing environment variable KARURA_TOKEN_BRIDGE_ADDRESS");
+    process.exit(1);
+  }
+
+  return {
+    chainId: 9,
+    nodeUrl: process.env.KARURA_NODE_URL,
+    walletPrivateKey: process.env.KARURA_PRIVATE_KEY,
+    tokenBridgeAddress: process.env.KARURA_TOKEN_BRIDGE_ADDRESS,
   };
 }
 

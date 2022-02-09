@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Redeem() {
-  const { handleClick, handleNativeClick, disabled, showLoader } =
+  const { handleClick, handleNativeClick, disabled, showLoader, handleRelayerRedeemClick } =
     useHandleRedeem();
   const targetChain = useSelector(selectTransferTargetChain);
   const targetAsset = useSelector(selectTransferTargetAsset);
@@ -155,7 +155,21 @@ function Redeem() {
         showLoader={showLoader || (isRecovery && isTransferCompletedLoading)}
         error={statusMessage}
       >
-        Redeem
+        Redeem (pay gas myself)
+      </ButtonWithLoader>
+
+      <ButtonWithLoader
+        //TODO disable when the associated token account is confirmed to not exist
+        disabled={
+          !isReady ||
+          disabled ||
+          (isRecovery && (isTransferCompletedLoading || isTransferCompleted))
+        }
+        onClick={ handleRelayerRedeemClick }
+        showLoader={showLoader || (isRecovery && isTransferCompletedLoading)}
+        error={statusMessage}
+      >
+        Redeem (gas paid by generous Acala)
       </ButtonWithLoader>
       <WaitingForWalletMessage />
 
