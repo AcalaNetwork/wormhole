@@ -45,7 +45,7 @@ import { signSendAndConfirm } from "../utils/solana";
 import { Alert } from "@material-ui/lab";
 import { postWithFees } from "../utils/terra";
 
-const RPC_URL = ' http://localhost:8547';
+const RPC_URL = 'http://188.166.208.240:8547';
 async function getKaruraGasParams(): Promise<{
   gasPrice: number,
   gasLimit: number,

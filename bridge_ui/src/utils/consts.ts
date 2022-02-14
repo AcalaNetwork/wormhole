@@ -215,8 +215,8 @@ export const WORMHOLE_RPC_HOSTS =
       ]
     : CLUSTER === "testnet"
     ? ["https://wormhole-v2-testnet-api.certus.one"]
-    : ["http://localhost:7071"];
-    // : ["http://188.166.208.240:7071"];   // for local UI testing
+    // : ["http://localhost:7071"];
+    : ["http://188.166.208.240:7071"];   // for local UI testing
 export const ETH_NETWORK_CHAIN_ID =
   CLUSTER === "mainnet" ? 1 : CLUSTER === "testnet" ? 5 : 1337;
 export const ROPSTEN_ETH_NETWORK_CHAIN_ID =

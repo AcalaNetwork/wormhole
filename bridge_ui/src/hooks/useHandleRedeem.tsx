@@ -251,7 +251,7 @@ export function useHandleRedeem() {
     dispatch(setIsRedeeming(true));
 
     try {
-      const RELAYER_ENDPOINT_URL = "http://localhost:3111/relay";   // TODO: move to const?
+      const RELAYER_ENDPOINT_URL = "http://188.166.208.240:3111/relay";   // TODO: move to const?
       const res = await axios.post(RELAYER_ENDPOINT_URL, {
         signedVAA: signedVAAHex,
         chainId: targetChain,
