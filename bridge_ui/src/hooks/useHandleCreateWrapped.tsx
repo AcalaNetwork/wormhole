@@ -52,13 +52,11 @@ async function getKaruraGasParams(): Promise<{
 }> {
   const gasLimit = 21000000;
   const storageLimit = 64001;
-  const res = (await axios.get(RPC_URL, {
-    data: {
-      "id": 0,
-      "jsonrpc": "2.0",
-      "method": "eth_getEthGas",
-      "params": [gasLimit, storageLimit],
-    }
+  const res = (await axios.post(RPC_URL, {
+    id: 0,
+    jsonrpc: '2.0',
+    method: "eth_getEthGas",
+    params: [gasLimit, storageLimit],
   })).data.result;
 
   return {
