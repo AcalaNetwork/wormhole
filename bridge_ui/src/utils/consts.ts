@@ -216,7 +216,7 @@ export const WORMHOLE_RPC_HOSTS =
     : CLUSTER === "testnet"
     ? ["https://wormhole-v2-testnet-api.certus.one"]
     // : ["http://localhost:7071"];
-    : ["http://188.166.208.240:7071"];   // for local UI testing
+    : ["http://188.166.208.240:7071"];   // TODO: change back for prod
 export const ETH_NETWORK_CHAIN_ID =
   CLUSTER === "mainnet" ? 1 : CLUSTER === "testnet" ? 5 : 1337;
 export const ROPSTEN_ETH_NETWORK_CHAIN_ID =
@@ -254,7 +254,8 @@ export const SOLANA_HOST = process.env.REACT_APP_SOLANA_API_URL
   ? clusterApiUrl("mainnet-beta")
   : CLUSTER === "testnet"
   ? clusterApiUrl("devnet")
-  : "http://localhost:8899";
+  // : "http://localhost:8899";
+  : "http://188.166.208.240:8899";   // TODO: change back for prod
 
 export const TERRA_HOST =
   CLUSTER === "mainnet"
@@ -270,7 +271,8 @@ export const TERRA_HOST =
         name: "testnet",
       }
     : {
-        URL: "http://localhost:1317",
+        // URL: "http://localhost:1317",
+        URL: "http://188.166.208.240:1317",  // TODO: change back
         chainID: "columbus-5",
         name: "localterra",
       };
@@ -852,7 +854,8 @@ export const TERRA_FCD_BASE =
     ? "https://fcd.terra.dev"
     : CLUSTER === "testnet"
     ? "https://bombay-fcd.terra.dev"
-    : "http://localhost:3060";
+    // : "http://localhost:3060";
+    : "http://188.166.208.240:3060";      // TODO: change back
 export const TERRA_GAS_PRICES_URL = `${TERRA_FCD_BASE}/v1/txs/gas_prices`;
 
 export const TOTAL_TRANSACTIONS_WORMHOLE = `https://europe-west3-wormhole-315720.cloudfunctions.net/mainnet-totals?groupBy=address`;
