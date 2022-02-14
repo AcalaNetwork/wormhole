@@ -22,22 +22,7 @@ module.exports = {
 
       addBeforeLoader(webpackConfig, loaderByName("file-loader"), wasmLoader);
 
-      webpackConfig.module.rules.push(
-        {
-          // this is needed to be compatible with some @polkadot packages
-          test: /\.js$/,
-          loader: require.resolve('@open-wc/webpack-import-meta-loader'),
-        },
-      );
-
       return webpackConfig;
     },
   },
-  babel: {
-    // this is needed for some @acala packages
-    plugins: [
-      '@babel/plugin-proposal-optional-chaining',
-      '@babel/plugin-proposal-nullish-coalescing-operator',
-    ],
-  }
 };

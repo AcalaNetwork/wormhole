@@ -20,8 +20,7 @@ import {
 } from "@terra-money/wallet-provider";
 import { Signer } from "ethers";
 import { useSnackbar } from "notistack";
-import { calcEthereumTransactionParams } from '@acala-network/eth-providers';
-import { ApiPromise, WsProvider } from '@polkadot/api';
+import axios from 'axios';
 import { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEthereumProvider } from "../contexts/EthereumProviderContext";
@@ -46,30 +45,26 @@ import { signSendAndConfirm } from "../utils/solana";
 import { Alert } from "@material-ui/lab";
 import { postWithFees } from "../utils/terra";
 
+const RPC_URL = ' http://localhost:8547';
 async function getKaruraGasParams(): Promise<{
   gasPrice: number,
   gasLimit: number,
 }> {
-  const MANDALA_URL = 'wss://node-6870830370282213376.rz.onfinality.io/ws?apikey=0f273197-e4d5-45e2-b23e-03b015cb7000';
-  const wsProvider = new WsProvider(MANDALA_URL);
-  const api = await ApiPromise.create({ provider: wsProvider });
-
-  const storageByteDeposit = (api.consts.evm.storageDepositPerByte).toString();
-  const txFeePerGas = (api.consts.evm.txFeePerGas).toString();
-  const blockNumber = (await api.rpc.chain.getHeader()).number.toNumber();
-
-  const ethParams = calcEthereumTransactionParams({
-    gasLimit: 21000000,
-    validUntil: blockNumber + 100,
-    storageLimit: 64001,
-    txFeePerGas,
-    storageByteDeposit,
-  });
+  const gasLimit = 21000000;
+  const storageLimit = 64001;
+  const res = (await axios.get(RPC_URL, {
+    data: {
+      "id": 0,
+      "jsonrpc": "2.0",
+      "method": "eth_getEthGas",
+      "params": [gasLimit, storageLimit],
+    }
+  })).data.result;
 
   return {
-    gasPrice: ethParams.txGasPrice.toNumber(),
-    gasLimit: ethParams.txGasLimit.toNumber(),
-  }
+    gasLimit: parseInt(res.gasLimit, 16),
+    gasPrice: parseInt(res.gasPrice, 16),
+  };
 };
 
 async function evm(
@@ -86,7 +81,7 @@ async function evm(
     ? await getKaruraGasParams()
     : {};
 
-  console.log(txGasOverrides);
+  console.log('gas:', txGasOverrides);
 
   try {
     const receipt = shouldUpdate
