@@ -42,8 +42,6 @@ export async function relay(request: any, response: any) {
     response
   );
 
-  console.log('relaying: ', { chainConfigInfo, chainId, signedVAA, unwrapNative });
-
   try {
     if (isEVMChain(chainId)) {
       await relayEVM(
