@@ -161,9 +161,9 @@ const (
 	// ChainIDAlgorand is the ChainID of Algorand
 	ChainIDAlgorand ChainID = 8
 	// ChainIDKarura is the ChainID of Karura
-	ChainIDKarura ChainID = 9
+	ChainIDKarura ChainID = 11
 	// ChainIDAcala is the ChainID of Acala
-	ChainIDAcala ChainID = 10
+	ChainIDAcala ChainID = 12
 
 	// ChainIDEthereumRopsten is the ChainID of Ethereum Ropsten
 	ChainIDEthereumRopsten ChainID = 10001
@@ -353,4 +353,15 @@ func MustWrite(w io.Writer, order binary.ByteOrder, data interface{}) {
 	if err := binary.Write(w, order, data); err != nil {
 		panic(fmt.Errorf("failed to write binary data: %v", data).Error())
 	}
+}
+
+// StringToAddress converts a hex-encoded adress into a vaa.Address
+func StringToAddress(value string) (Address, error) {
+	var address Address
+	res, err := hex.DecodeString(value)
+	if err != nil {
+		return address, err
+	}
+	copy(address[:], res)
+	return address, nil
 }
