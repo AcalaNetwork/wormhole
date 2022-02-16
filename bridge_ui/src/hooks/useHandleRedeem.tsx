@@ -34,6 +34,7 @@ import {
 import { setIsRedeeming, setRedeemTx } from "../store/transferSlice";
 import {
   getTokenBridgeAddressForChain,
+  KARURA_RELAYER_ENDPOINT_URL,
   MAX_VAA_UPLOAD_RETRIES_SOLANA,
   SOLANA_HOST,
   SOL_BRIDGE_ADDRESS,
@@ -251,8 +252,7 @@ export function useHandleRedeem() {
     dispatch(setIsRedeeming(true));
 
     try {
-      const RELAYER_ENDPOINT_URL = "http://188.166.208.240:3111/relay";   // TODO: move to const?
-      const res = await axios.post(RELAYER_ENDPOINT_URL, {
+      const res = await axios.post(KARURA_RELAYER_ENDPOINT_URL, {
         signedVAA: signedVAAHex,
         chainId: targetChain,
         unwrapNative: false,

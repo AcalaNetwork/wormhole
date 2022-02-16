@@ -1011,3 +1011,6 @@ export const RELAYER_SUPPORTED_ADDRESSES_AND_THRESHOLDS = {
     '0x12345': 10000,
   },
 };
+
+// export const KARURA_RELAYER_ENDPOINT_URL = "http://localhost:3111/relay";
+export const KARURA_RELAYER_ENDPOINT_URL = "http://188.166.208.240:3111/relay";
