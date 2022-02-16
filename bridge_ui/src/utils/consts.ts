@@ -9,6 +9,7 @@ import {
   CHAIN_ID_TERRA,
   CHAIN_ID_OASIS,
   CHAIN_ID_KARURA,
+  CHAIN_ID_ACALA,
   isEVMChain,
 } from "@certusone/wormhole-sdk";
 import { clusterApiUrl } from "@solana/web3.js";
@@ -20,7 +21,8 @@ import oasisIcon from "../icons/oasis-network-rose-logo.svg";
 import polygonIcon from "../icons/polygon.svg";
 import solanaIcon from "../icons/solana.svg";
 import terraIcon from "../icons/terra.svg";
-import KaruraIcon from "../icons/karura.svg";
+import KaruraIcon from "../icons/karura.svg";   // TODO: change to more official one, this is my screenshot...
+import AcalaIcon from "../icons/acala.svg";     // TODO: change to more official one, this is my screenshot...
 
 const DUMMY_ADDRESS = "0x0000000000000000000000000000000000000000";
 
@@ -79,6 +81,12 @@ export const CHAINS: ChainInfo[] =
           name: "Karura",
           logo: KaruraIcon,
         },
+        // TODO: enable later
+        // {
+        //   id: CHAIN_ID_ACALA,
+        //   name: "Acala",
+        //   logo: AcalaIcon,
+        // },
       ]
     : CLUSTER === "testnet"
     ? [
@@ -127,6 +135,12 @@ export const CHAINS: ChainInfo[] =
           name: "Karura",
           logo: KaruraIcon,
         },
+        // TODO: enable later
+        // {
+        //   id: CHAIN_ID_ACALA,
+        //   name: "Acala",
+        //   logo: AcalaIcon,
+        // },
       ]
     : [
         {
@@ -154,6 +168,12 @@ export const CHAINS: ChainInfo[] =
           name: "Karura",
           logo: KaruraIcon,
         },
+        // TODO: enable later
+        // {
+        //   id: CHAIN_ID_ACALA,
+        //   name: "Acala",
+        //   logo: AcalaIcon,
+        // },
       ];
 export const BETA_CHAINS: ChainId[] = CLUSTER === "mainnet" ? [] : [];
 export const CHAINS_WITH_NFT_SUPPORT = CHAINS.filter(
@@ -190,6 +210,8 @@ export const getDefaultNativeCurrencySymbol = (chainId: ChainId) =>
     ? "ROSE"
     : chainId === CHAIN_ID_KARURA
     ? "KAR"
+    : chainId === CHAIN_ID_ACALA
+    ? "ACA"
     : "";
 export const getExplorerName = (chainId: ChainId) =>
   chainId === CHAIN_ID_ETH || chainId === CHAIN_ID_ETHEREUM_ROPSTEN
@@ -245,7 +267,7 @@ export const getEvmChainId = (chainId: ChainId) =>
     ? AVAX_NETWORK_CHAIN_ID
     : chainId === CHAIN_ID_OASIS
     ? OASIS_NETWORK_CHAIN_ID
-    : chainId === CHAIN_ID_KARURA
+    : chainId === CHAIN_ID_KARURA || chainId === CHAIN_ID_ACALA
     ? KARURA_CHAIN_ID
     : undefined;
 export const SOLANA_HOST = process.env.REACT_APP_SOLANA_API_URL
@@ -333,6 +355,27 @@ export const KARURA_NFT_BRIDGE_ADDRESS = getAddress(
       : DUMMY_ADDRESS
 );
 export const KARURA_TOKEN_BRIDGE_ADDRESS = getAddress(
+  CLUSTER === "mainnet"
+    ? DUMMY_ADDRESS
+    : CLUSTER === "testnet"
+      ? DUMMY_ADDRESS
+      : "0x0290FB167208Af455bB137780163b7B7a9a10C16"
+);
+export const ACALA_BRIDGE_ADDRESS = getAddress(
+  CLUSTER === "mainnet"
+    ? DUMMY_ADDRESS
+    : CLUSTER === "testnet"
+      ? DUMMY_ADDRESS
+      : "0xC89Ce4735882C9F0f0FE26686c53074E09B0D550"
+);
+export const ACALA_NFT_BRIDGE_ADDRESS = getAddress(
+  CLUSTER === "mainnet"
+    ? DUMMY_ADDRESS
+    : CLUSTER === "testnet"
+      ? DUMMY_ADDRESS
+      : DUMMY_ADDRESS
+);
+export const ACALA_TOKEN_BRIDGE_ADDRESS = getAddress(
   CLUSTER === "mainnet"
     ? DUMMY_ADDRESS
     : CLUSTER === "testnet"
@@ -480,6 +523,8 @@ export const getBridgeAddressForChain = (chainId: ChainId) =>
     ? OASIS_BRIDGE_ADDRESS
     : chainId === CHAIN_ID_KARURA
     ? KARURA_BRIDGE_ADDRESS
+    : chainId === CHAIN_ID_ACALA
+    ? ACALA_BRIDGE_ADDRESS
     : "";
 export const getNFTBridgeAddressForChain = (chainId: ChainId) =>
   chainId === CHAIN_ID_SOLANA
@@ -498,6 +543,8 @@ export const getNFTBridgeAddressForChain = (chainId: ChainId) =>
     ? OASIS_NFT_BRIDGE_ADDRESS
     : chainId === CHAIN_ID_KARURA
     ? KARURA_NFT_BRIDGE_ADDRESS
+    : chainId === CHAIN_ID_ACALA
+    ? ACALA_NFT_BRIDGE_ADDRESS
     : "";
 export const getTokenBridgeAddressForChain = (chainId: ChainId) =>
   chainId === CHAIN_ID_SOLANA
@@ -518,6 +565,8 @@ export const getTokenBridgeAddressForChain = (chainId: ChainId) =>
     ? OASIS_TOKEN_BRIDGE_ADDRESS
     : chainId === CHAIN_ID_KARURA
     ? KARURA_TOKEN_BRIDGE_ADDRESS
+    : chainId === CHAIN_ID_ACALA
+    ? ACALA_TOKEN_BRIDGE_ADDRESS
     : "";
 
 export const COVALENT_API_KEY = process.env.REACT_APP_COVALENT_API_KEY
@@ -626,8 +675,6 @@ export const WORMHOLE_V1_MINT_AUTHORITY =
     : CLUSTER === "testnet"
     ? "BJa7dq3bRP216zaTdw4cdcV71WkPc1HXvmnGeFVDi5DC"
     : "";
-
-export const WKAR_ADDRESS = '0x0000000000000000000100000000000000000000';
 
 // hardcoded addresses for warnings
 export const SOLANA_TOKENS_THAT_EXIST_ELSEWHERE = [
@@ -953,3 +1000,14 @@ export const POLYGON_TERRA_WRAPPED_TOKENS = [
 ];
 
 export const JUPITER_SWAP_BASE_URL = "https://jup.ag/swap";
+
+// TODO: repace with real value after we know the addresses
+// or async fetch it, like tokenMarkets
+export const RELAYER_SUPPORTED_ADDRESSES_AND_THRESHOLDS = {
+  [CHAIN_ID_KARURA]: {
+    '0x12345': 10000,
+  },
+  [CHAIN_ID_ACALA]: {
+    '0x12345': 10000,
+  },
+};
