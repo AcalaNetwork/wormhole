@@ -39,20 +39,20 @@ import {
   SOL_BRIDGE_ADDRESS,
   SOL_TOKEN_BRIDGE_ADDRESS,
   TERRA_TOKEN_BRIDGE_ADDRESS,
+  KARURA_RPC_URL,
 } from "../utils/consts";
 import parseError from "../utils/parseError";
 import { signSendAndConfirm } from "../utils/solana";
 import { Alert } from "@material-ui/lab";
 import { postWithFees } from "../utils/terra";
 
-const RPC_URL = 'http://188.166.208.240:8547';
 async function getKaruraGasParams(): Promise<{
   gasPrice: number,
   gasLimit: number,
 }> {
   const gasLimit = 21000000;
   const storageLimit = 64001;
-  const res = (await axios.post(RPC_URL, {
+  const res = (await axios.post(KARURA_RPC_URL, {
     id: 0,
     jsonrpc: '2.0',
     method: "eth_getEthGas",
@@ -79,7 +79,7 @@ async function evm(
     ? await getKaruraGasParams()
     : {};
 
-  console.log('gas:', txGasOverrides);
+  console.log('custom gas:', txGasOverrides);
 
   try {
     const receipt = shouldUpdate

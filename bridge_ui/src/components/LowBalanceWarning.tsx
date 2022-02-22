@@ -1,8 +1,9 @@
-import { ChainId, CHAIN_ID_ACALA, CHAIN_ID_KARURA, CHAIN_ID_TERRA } from "@certusone/wormhole-sdk";
+import { ChainId, CHAIN_ID_TERRA } from "@certusone/wormhole-sdk";
 import { makeStyles, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import useIsWalletReady from "../hooks/useIsWalletReady";
 import useTransactionFees from "../hooks/useTransactionFees";
+import { useShouldRelay } from "../hooks/useShouldRelay";
 import { getDefaultNativeCurrencySymbol } from "../utils/consts";
 
 const useStyles = makeStyles((theme) => ({
@@ -16,11 +17,12 @@ function LowBalanceWarning({ chainId }: { chainId: ChainId }) {
   const classes = useStyles();
   const { isReady } = useIsWalletReady(chainId);
   const transactionFeeWarning = useTransactionFees(chainId);
+  const shouldRelay = useShouldRelay();
   const displayWarning =
     isReady &&
     (chainId === CHAIN_ID_TERRA || transactionFeeWarning.balanceString) &&
-    ![CHAIN_ID_KARURA, CHAIN_ID_ACALA].includes(chainId) &&
-    transactionFeeWarning.isSufficientBalance === false;
+    transactionFeeWarning.isSufficientBalance === false &&
+    !shouldRelay;
 
   const warningMessage =
     chainId === CHAIN_ID_TERRA

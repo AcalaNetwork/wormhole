@@ -238,7 +238,7 @@ export const WORMHOLE_RPC_HOSTS =
     : CLUSTER === "testnet"
     ? ["https://wormhole-v2-testnet-api.certus.one"]
     // : ["http://localhost:7071"];
-    : ["http://188.166.208.240:7071"];   // TODO: change back for prod
+    : ["http://157.245.62.53:7071"];   // TODO: change back for prod
 export const ETH_NETWORK_CHAIN_ID =
   CLUSTER === "mainnet" ? 1 : CLUSTER === "testnet" ? 5 : 1337;
 export const ROPSTEN_ETH_NETWORK_CHAIN_ID =
@@ -277,7 +277,7 @@ export const SOLANA_HOST = process.env.REACT_APP_SOLANA_API_URL
   : CLUSTER === "testnet"
   ? clusterApiUrl("devnet")
   // : "http://localhost:8899";
-  : "http://188.166.208.240:8899";   // TODO: change back for prod
+  : "http://157.245.62.53:8899";   // TODO: change back for prod
 
 export const TERRA_HOST =
   CLUSTER === "mainnet"
@@ -294,7 +294,7 @@ export const TERRA_HOST =
       }
     : {
         // URL: "http://localhost:1317",
-        URL: "http://188.166.208.240:1317",  // TODO: change back
+        URL: "http://157.245.62.53:1317",  // TODO: change back
         chainID: "columbus-5",
         name: "localterra",
       };
@@ -902,7 +902,7 @@ export const TERRA_FCD_BASE =
     : CLUSTER === "testnet"
     ? "https://bombay-fcd.terra.dev"
     // : "http://localhost:3060";
-    : "http://188.166.208.240:3060";      // TODO: change back
+    : "http://157.245.62.53:3060";      // TODO: change back
 export const TERRA_GAS_PRICES_URL = `${TERRA_FCD_BASE}/v1/txs/gas_prices`;
 
 export const TOTAL_TRANSACTIONS_WORMHOLE = `https://europe-west3-wormhole-315720.cloudfunctions.net/mainnet-totals?groupBy=address`;
@@ -1005,7 +1005,7 @@ export const JUPITER_SWAP_BASE_URL = "https://jup.ag/swap";
 // or async fetch it, like tokenMarkets
 export const RELAYER_SUPPORTED_ADDRESSES_AND_THRESHOLDS = {
   [CHAIN_ID_KARURA]: {
-    '0x12345': 10000,
+    '0xc1c1793fEa290518adbFe35eCa357743a87042Eb': '100000000000000000000',   // 100 WETH
   },
   [CHAIN_ID_ACALA]: {
     '0x12345': 10000,
@@ -1013,4 +1013,5 @@ export const RELAYER_SUPPORTED_ADDRESSES_AND_THRESHOLDS = {
 };
 
 // export const KARURA_RELAYER_ENDPOINT_URL = "http://localhost:3111/relay";
-export const KARURA_RELAYER_ENDPOINT_URL = "http://188.166.208.240:3111/relay";
+export const KARURA_RELAYER_ENDPOINT_URL = "http://157.245.62.53:3111/relay";
+export const KARURA_RPC_URL = "http://157.245.62.53:8547";

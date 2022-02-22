@@ -9,7 +9,6 @@ import {
   CHAIN_ID_TERRA,
   isEVMChain,
   WSOL_ADDRESS,
-  ChainId,
 } from "@certusone/wormhole-sdk";
 import {
   Checkbox,
@@ -18,18 +17,16 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { parseUnits } from "ethers/lib/utils";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useGetIsTransferCompleted from "../../hooks/useGetIsTransferCompleted";
 import { useHandleRedeem } from "../../hooks/useHandleRedeem";
 import useIsWalletReady from "../../hooks/useIsWalletReady";
+import { useShouldRelay } from "../../hooks/useShouldRelay";
 import {
   selectTransferIsRecovery,
   selectTransferTargetAsset,
   selectTransferTargetChain,
-  selectTransferAmount,
-  selectTransferSourceParsedTokenAccount,
 } from "../../store/selectors";
 import { reset } from "../../store/transferSlice";
 import {
@@ -40,7 +37,6 @@ import {
   WETH_ADDRESS,
   WMATIC_ADDRESS,
   WROSE_ADDRESS,
-  RELAYER_SUPPORTED_ADDRESSES_AND_THRESHOLDS,
 } from "../../utils/consts";
 import ButtonWithLoader from "../ButtonWithLoader";
 import KeyAndBalance from "../KeyAndBalance";
@@ -59,34 +55,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const shouldRelay = (chainId: ChainId, address: string | null | undefined, amount: bigint | false | "") => {
-  const supported = RELAYER_SUPPORTED_ADDRESSES_AND_THRESHOLDS[chainId] as any;
-  if (!supported || !address || !amount) return false;
-
-  const minTransfer = supported[address];
-
-  console.log('relay: ', { address, amount })
-
-  return true;    // TODO: remove it in prod
-  return !!minTransfer && amount >= minTransfer;
-};
-
 function Redeem() {
   const { handleClick, handleNativeClick, disabled, showLoader, handleRelayerRedeemClick } =
     useHandleRedeem();
   const targetChain = useSelector(selectTransferTargetChain);
   const targetAsset = useSelector(selectTransferTargetAsset);
   const isRecovery = useSelector(selectTransferIsRecovery);
-  const sourceAmount = useSelector(selectTransferAmount);
-  const sourceParsedTokenAccount = useSelector(
-    selectTransferSourceParsedTokenAccount
-  );
-  const sourceDecimals = sourceParsedTokenAccount?.decimals;
-  const sourceAmountParsed =
-    sourceDecimals !== undefined &&
-    sourceDecimals !== null &&
-    sourceAmount &&
-    parseUnits(sourceAmount, sourceDecimals).toBigInt();
   const { isTransferCompletedLoading, isTransferCompleted } =
     useGetIsTransferCompleted(true);
   const classes = useStyles();
@@ -137,9 +111,7 @@ function Redeem() {
     dispatch(reset());
   }, [dispatch]);
   const howToAddTokensUrl = getHowToAddTokensToWalletUrl(targetChain);
-  const _shouldRelay = useMemo(() => (
-    shouldRelay(targetChain, targetAsset, sourceAmountParsed)
-  ), [targetChain, targetAsset, sourceAmountParsed]);
+  const shouldRelay = useShouldRelay();
 
   return (
     <>
@@ -173,7 +145,7 @@ function Redeem() {
           (isRecovery && (isTransferCompletedLoading || isTransferCompleted))
         }
         onClick={
-          _shouldRelay
+          shouldRelay
             ? handleRelayerRedeemClick
             : isNativeEligible && useNativeRedeem
               ? handleNativeClick
@@ -182,10 +154,10 @@ function Redeem() {
         showLoader={showLoader || (isRecovery && isTransferCompletedLoading)}
         error={statusMessage}
       >
-        { `Redeem ${ _shouldRelay ? '(Acala pays gas for you 🎉)' : '' }` }
+        { `Redeem ${ shouldRelay ? '(Acala pays gas for you 🎉)' : '' }` }
       </ButtonWithLoader>
 
-      { !_shouldRelay && <WaitingForWalletMessage /> }
+      { !shouldRelay && <WaitingForWalletMessage /> }
 
       {isRecovery && isReady && isTransferCompleted ? (
         <>
