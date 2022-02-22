@@ -5,16 +5,16 @@ import { parseUnits } from "ethers/lib/utils";
 import { RELAYER_SUPPORTED_ADDRESSES_AND_THRESHOLDS } from "../utils/consts";
 import {
   selectTransferTargetChain,
-  selectTransferTargetAsset,
   selectTransferAmount,
   selectTransferSourceParsedTokenAccount,
+  selectTransferSourceAsset,
 } from "../store/selectors";
 
 const shouldRelay = (chainId: ChainId, address: string | null | undefined, amount: bigint | false | "") => {
   const supported = RELAYER_SUPPORTED_ADDRESSES_AND_THRESHOLDS[chainId] as any;
   if (!supported || !address || !amount) return false;
 
-  const minTransfer = supported[address];
+  const minTransfer = supported[address.toLowerCase()];
   const res = !!minTransfer && amount >= BigInt(minTransfer);
 
   console.log('check should relay: ', { chainId, address, amount, res })
@@ -24,7 +24,7 @@ const shouldRelay = (chainId: ChainId, address: string | null | undefined, amoun
 
 export const useShouldRelay = (): boolean => {
   const targetChain = useSelector(selectTransferTargetChain);
-  const targetAsset = useSelector(selectTransferTargetAsset);
+  const sourceAsset = useSelector(selectTransferSourceAsset);
   const sourceAmount = useSelector(selectTransferAmount);
   const sourceParsedTokenAccount = useSelector(
     selectTransferSourceParsedTokenAccount
@@ -37,6 +37,6 @@ export const useShouldRelay = (): boolean => {
     parseUnits(sourceAmount, sourceDecimals).toBigInt();
 
   return useMemo(() => (
-    shouldRelay(targetChain, targetAsset, sourceAmountParsed)
-  ), [targetChain, targetAsset, sourceAmountParsed]);
+    shouldRelay(targetChain, sourceAsset, sourceAmountParsed)
+  ), [targetChain, sourceAsset, sourceAmountParsed]);
 };

@@ -1005,7 +1005,7 @@ export const JUPITER_SWAP_BASE_URL = "https://jup.ag/swap";
 // or async fetch it, like tokenMarkets
 export const RELAYER_SUPPORTED_ADDRESSES_AND_THRESHOLDS = {
   [CHAIN_ID_KARURA]: {
-    '0xc1c1793fEa290518adbFe35eCa357743a87042Eb': '100000000000000000000',   // 100 WETH
+    '0xddb64fe46a91d46ee29420539fc25fd07c5fea3e': '10000000000000000000',   // 10 WETH
   },
   [CHAIN_ID_ACALA]: {
     '0x12345': 10000,
