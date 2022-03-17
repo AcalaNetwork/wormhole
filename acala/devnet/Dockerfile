@@ -1,1 +1,1 @@
-FROM acala/mandala-node:01a2dea6
+FROM acala/mandala-node:b63f4e1e
