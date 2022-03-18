@@ -26,8 +26,6 @@ import polygonIcon from "../icons/polygon.svg";
 import solanaIcon from "../icons/solana.svg";
 import terraIcon from "../icons/terra.svg";
 
-const DUMMY_ADDRESS = "0x0000000000000000000000000000000000000000";
-
 export type Cluster = "devnet" | "testnet" | "mainnet";
 export const CLUSTER: Cluster =
   process.env.REACT_APP_CLUSTER === "mainnet"
@@ -83,17 +81,6 @@ export const CHAINS: ChainInfo[] =
           name: "Terra",
           logo: terraIcon,
         },
-        {
-          id: CHAIN_ID_KARURA,
-          name: "Karura",
-          logo: KaruraIcon,
-        },
-        // TODO: enable later
-        // {
-        //   id: CHAIN_ID_ACALA,
-        //   name: "Acala",
-        //   logo: AcalaIcon,
-        // },
       ]
     : CLUSTER === "testnet"
     ? [
@@ -152,17 +139,6 @@ export const CHAINS: ChainInfo[] =
           name: "Terra",
           logo: terraIcon,
         },
-        {
-          id: CHAIN_ID_KARURA,
-          name: "Karura",
-          logo: KaruraIcon,
-        },
-        // TODO: enable later
-        // {
-        //   id: CHAIN_ID_ACALA,
-        //   name: "Acala",
-        //   logo: AcalaIcon,
-        // },
       ]
     : [
         {
@@ -190,12 +166,6 @@ export const CHAINS: ChainInfo[] =
           name: "Karura",
           logo: KaruraIcon,
         },
-        // TODO: enable later
-        // {
-        //   id: CHAIN_ID_ACALA,
-        //   name: "Acala",
-        //   logo: AcalaIcon,
-        // },
       ];
 export const BETA_CHAINS: ChainId[] = CLUSTER === "mainnet" ? [] : [];
 export const CHAINS_WITH_NFT_SUPPORT = CHAINS.filter(
