@@ -1,4 +1,6 @@
 import {
+  CHAIN_ID_ACALA,
+  CHAIN_ID_KARURA,
   CHAIN_ID_SOLANA,
   CHAIN_ID_TERRA,
   hexToNativeString,
@@ -169,15 +171,17 @@ function Target() {
           setAssociatedAccountExists={setAssociatedAccountExists}
         />
       ) : null}
-      <Alert severity="info" variant="outlined" className={classes.alert}>
-        <Typography>
-          You will have to pay transaction fees on{" "}
-          {CHAINS_BY_ID[targetChain].name} to redeem your tokens.
-        </Typography>
-        {(isEVMChain(targetChain) || targetChain === CHAIN_ID_TERRA) && (
-          <GasEstimateSummary methodType="transfer" chainId={targetChain} />
-        )}
-      </Alert>
+      { ![CHAIN_ID_ACALA, CHAIN_ID_KARURA].includes(targetChain) && (
+        <Alert severity="info" variant="outlined" className={classes.alert}>
+          <Typography>
+            You will have to pay transaction fees on{" "}
+            {CHAINS_BY_ID[targetChain].name} to redeem your tokens.
+          </Typography>
+          {(isEVMChain(targetChain) || targetChain === CHAIN_ID_TERRA) && (
+            <GasEstimateSummary methodType="transfer" chainId={targetChain} />
+          )}
+        </Alert>
+      )}
       <LowBalanceWarning chainId={targetChain} />
       {targetChain === CHAIN_ID_SOLANA && <SolanaTPSWarning />}
       <ButtonWithLoader

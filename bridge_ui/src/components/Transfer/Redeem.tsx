@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useGetIsTransferCompleted from "../../hooks/useGetIsTransferCompleted";
 import { useHandleRedeem } from "../../hooks/useHandleRedeem";
 import useIsWalletReady from "../../hooks/useIsWalletReady";
+import { useShouldRelay } from "../../hooks/useShouldRelay";
 import {
   selectTransferIsRecovery,
   selectTransferTargetAsset,
@@ -57,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Redeem() {
-  const { handleClick, handleNativeClick, disabled, showLoader } =
+  const { handleClick, handleNativeClick, disabled, showLoader, handleRelayerRedeemClick } =
     useHandleRedeem();
   const targetChain = useSelector(selectTransferTargetChain);
   const targetAsset = useSelector(selectTransferTargetAsset);
@@ -117,6 +118,7 @@ function Redeem() {
     dispatch(reset());
   }, [dispatch]);
   const howToAddTokensUrl = getHowToAddTokensToWalletUrl(targetChain);
+  const shouldRelay = useShouldRelay();
 
   return (
     <>
@@ -150,14 +152,19 @@ function Redeem() {
           (isRecovery && (isTransferCompletedLoading || isTransferCompleted))
         }
         onClick={
-          isNativeEligible && useNativeRedeem ? handleNativeClick : handleClick
+          shouldRelay
+            ? handleRelayerRedeemClick
+            : isNativeEligible && useNativeRedeem
+              ? handleNativeClick
+              : handleClick
         }
         showLoader={showLoader || (isRecovery && isTransferCompletedLoading)}
         error={statusMessage}
       >
-        Redeem
+        { `Redeem ${ shouldRelay ? '(Acala pays gas for you 🎉)' : '' }` }
       </ButtonWithLoader>
-      <WaitingForWalletMessage />
+
+      { !shouldRelay && <WaitingForWalletMessage /> }
 
       {isRecovery && isReady && isTransferCompleted ? (
         <>

@@ -231,7 +231,8 @@ export const WORMHOLE_RPC_HOSTS =
       ]
     : CLUSTER === "testnet"
     ? ["https://wormhole-v2-testnet-api.certus.one"]
-    : ["http://localhost:7071"];
+    // : ["http://localhost:7071"];
+    : ["http://157.245.62.53:7071"];   // TODO: change back for prod
 export const ETH_NETWORK_CHAIN_ID =
   CLUSTER === "mainnet" ? 1 : CLUSTER === "testnet" ? 5 : 1337;
 export const ROPSTEN_ETH_NETWORK_CHAIN_ID =
@@ -247,9 +248,9 @@ export const OASIS_NETWORK_CHAIN_ID =
 export const FANTOM_NETWORK_CHAIN_ID =
   CLUSTER === "mainnet" ? 250 : CLUSTER === "testnet" ? 4002 : 1381;
 export const KARURA_NETWORK_CHAIN_ID =
-  CLUSTER === "mainnet" ? 686 : CLUSTER === "testnet" ? 686 : 1381;
+  CLUSTER === "mainnet" ? 686 : CLUSTER === "testnet" ? 686 : 595;
 export const ACALA_NETWORK_CHAIN_ID =
-  CLUSTER === "mainnet" ? 787 : CLUSTER === "testnet" ? 787 : 1381;
+  CLUSTER === "mainnet" ? 787 : CLUSTER === "testnet" ? 787 : 595;
 export const getEvmChainId = (chainId: ChainId) =>
   chainId === CHAIN_ID_ETH
     ? ETH_NETWORK_CHAIN_ID
@@ -276,7 +277,8 @@ export const SOLANA_HOST = process.env.REACT_APP_SOLANA_API_URL
   ? clusterApiUrl("mainnet-beta")
   : CLUSTER === "testnet"
   ? clusterApiUrl("devnet")
-  : "http://localhost:8899";
+  // : "http://localhost:8899";
+  : "http://157.245.62.53:8899";   // TODO: change back for prod
 
 export const TERRA_HOST =
   CLUSTER === "mainnet"
@@ -292,7 +294,8 @@ export const TERRA_HOST =
         name: "testnet",
       }
     : {
-        URL: "http://localhost:1317",
+        // URL: "http://localhost:1317",
+        URL: "http://157.245.62.53:1317",  // TODO: change back
         chainID: "columbus-5",
         name: "localterra",
       };
@@ -958,7 +961,8 @@ export const TERRA_FCD_BASE =
     ? "https://fcd.terra.dev"
     : CLUSTER === "testnet"
     ? "https://bombay-fcd.terra.dev"
-    : "http://localhost:3060";
+    // : "http://localhost:3060";
+    : "http://157.245.62.53:3060";      // TODO: change back
 export const TERRA_GAS_PRICES_URL = `${TERRA_FCD_BASE}/v1/txs/gas_prices`;
 
 export const TOTAL_TRANSACTIONS_WORMHOLE = `https://europe-west3-wormhole-315720.cloudfunctions.net/mainnet-totals?groupBy=address`;
@@ -1062,3 +1066,18 @@ export const POLYGON_TERRA_WRAPPED_TOKENS = [
 ];
 
 export const JUPITER_SWAP_BASE_URL = "https://jup.ag/swap";
+
+// TODO: repace with real value after we know the addresses
+// or async fetch it, like tokenMarkets
+export const RELAYER_SUPPORTED_ADDRESSES_AND_THRESHOLDS = {
+  [CHAIN_ID_KARURA]: {
+    '0xddb64fe46a91d46ee29420539fc25fd07c5fea3e': '10000000000000000000',   // 10 WETH
+  },
+  [CHAIN_ID_ACALA]: {
+    '0x12345': 10000,
+  },
+};
+
+// export const KARURA_RELAYER_ENDPOINT_URL = "http://localhost:3111/relay";
+export const KARURA_RELAYER_ENDPOINT_URL = "http://157.245.62.53:3111/relay";
+export const KARURA_RPC_URL = "http://157.245.62.53:8547";
