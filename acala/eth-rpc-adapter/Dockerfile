@@ -1,1 +1,1 @@
-FROM acala/eth-rpc-adapter:f8164ca
+FROM acala/eth-rpc-adapter:6d5d2a4090f84cf8a08dd4da9f4528e2269f6311

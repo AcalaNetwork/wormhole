@@ -3,6 +3,7 @@ import {
   CHAIN_ID_BSC,
   CHAIN_ID_ETH,
   CHAIN_ID_ETHEREUM_ROPSTEN,
+  CHAIN_ID_FANTOM,
   CHAIN_ID_OASIS,
   CHAIN_ID_POLYGON,
   CHAIN_ID_SOLANA,
@@ -35,6 +36,7 @@ import {
   WAVAX_ADDRESS,
   WBNB_ADDRESS,
   WETH_ADDRESS,
+  WFTM_ADDRESS,
   WMATIC_ADDRESS,
   WROSE_ADDRESS,
 } from "../../utils/consts";
@@ -91,6 +93,10 @@ function Redeem() {
     targetChain === CHAIN_ID_OASIS &&
     targetAsset &&
     targetAsset.toLowerCase() === WROSE_ADDRESS.toLowerCase();
+  const isFantomNative =
+    targetChain === CHAIN_ID_FANTOM &&
+    targetAsset &&
+    targetAsset.toLowerCase() === WFTM_ADDRESS.toLowerCase();
   const isSolNative =
     targetChain === CHAIN_ID_SOLANA &&
     targetAsset &&
@@ -102,6 +108,7 @@ function Redeem() {
     isPolygonNative ||
     isAvaxNative ||
     isOasisNative ||
+    isFantomNative ||
     isSolNative;
   const [useNativeRedeem, setUseNativeRedeem] = useState(true);
   const toggleNativeRedeem = useCallback(() => {
