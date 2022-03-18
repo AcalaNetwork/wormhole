@@ -161,11 +161,6 @@ export const CHAINS: ChainInfo[] =
           name: "Terra",
           logo: terraIcon,
         },
-        {
-          id: CHAIN_ID_KARURA,
-          name: "Karura",
-          logo: KaruraIcon,
-        },
       ];
 export const BETA_CHAINS: ChainId[] = CLUSTER === "mainnet" ? [] : [];
 export const CHAINS_WITH_NFT_SUPPORT = CHAINS.filter(
