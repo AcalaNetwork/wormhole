@@ -388,48 +388,6 @@ export const BSC_TOKEN_BRIDGE_ADDRESS = getAddress(
     ? "0x9dcF9D205C9De35334D646BeE44b2D2859712A09"
     : "0x0290FB167208Af455bB137780163b7B7a9a10C16"
 );
-export const KARURA_BRIDGE_ADDRESS = getAddress(
-  CLUSTER === "mainnet"
-    ? DUMMY_ADDRESS
-    : CLUSTER === "testnet"
-      ? DUMMY_ADDRESS
-      : "0xC89Ce4735882C9F0f0FE26686c53074E09B0D550"
-);
-export const KARURA_NFT_BRIDGE_ADDRESS = getAddress(
-  CLUSTER === "mainnet"
-    ? DUMMY_ADDRESS
-    : CLUSTER === "testnet"
-      ? DUMMY_ADDRESS
-      : DUMMY_ADDRESS
-);
-export const KARURA_TOKEN_BRIDGE_ADDRESS = getAddress(
-  CLUSTER === "mainnet"
-    ? DUMMY_ADDRESS
-    : CLUSTER === "testnet"
-      ? DUMMY_ADDRESS
-      : "0x0290FB167208Af455bB137780163b7B7a9a10C16"
-);
-export const ACALA_BRIDGE_ADDRESS = getAddress(
-  CLUSTER === "mainnet"
-    ? DUMMY_ADDRESS
-    : CLUSTER === "testnet"
-      ? DUMMY_ADDRESS
-      : "0xC89Ce4735882C9F0f0FE26686c53074E09B0D550"
-);
-export const ACALA_NFT_BRIDGE_ADDRESS = getAddress(
-  CLUSTER === "mainnet"
-    ? DUMMY_ADDRESS
-    : CLUSTER === "testnet"
-      ? DUMMY_ADDRESS
-      : DUMMY_ADDRESS
-);
-export const ACALA_TOKEN_BRIDGE_ADDRESS = getAddress(
-  CLUSTER === "mainnet"
-    ? DUMMY_ADDRESS
-    : CLUSTER === "testnet"
-      ? DUMMY_ADDRESS
-      : "0x0290FB167208Af455bB137780163b7B7a9a10C16"
-);
 export const POLYGON_BRIDGE_ADDRESS = getAddress(
   CLUSTER === "mainnet"
     ? "0x7A4B5a56256163F07b2C80A7cA55aBE66c4ec4d7"
