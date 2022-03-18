@@ -22,7 +22,6 @@ import {
 } from "@terra-money/wallet-provider";
 import { Signer } from "ethers";
 import { useSnackbar } from "notistack";
-import axios from 'axios';
 import { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEthereumProvider } from "../contexts/EthereumProviderContext";
@@ -58,7 +57,6 @@ async function evm(
   shouldUpdate: boolean
 ) {
   dispatch(setIsCreating(true));
-
   try {
     // Karura and Acala need gas params for contract deploys
     const overrides =
