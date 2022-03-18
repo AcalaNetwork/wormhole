@@ -25,8 +25,6 @@ import oasisIcon from "../icons/oasis-network-rose-logo.svg";
 import polygonIcon from "../icons/polygon.svg";
 import solanaIcon from "../icons/solana.svg";
 import terraIcon from "../icons/terra.svg";
-import KaruraIcon from "../icons/karura.svg";   // TODO: change to more official one, this is my screenshot...
-import AcalaIcon from "../icons/acala.svg";     // TODO: change to more official one, this is my screenshot...
 
 const DUMMY_ADDRESS = "0x0000000000000000000000000000000000000000";
 

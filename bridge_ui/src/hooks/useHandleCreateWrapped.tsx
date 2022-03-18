@@ -12,7 +12,6 @@ import {
   updateWrappedOnEth,
   updateWrappedOnSolana,
   updateWrappedOnTerra,
->>>>>>> origin/acala
 } from "@certusone/wormhole-sdk";
 import { Alert } from "@material-ui/lab";
 import { WalletContextState } from "@solana/wallet-adapter-react";
@@ -43,32 +42,12 @@ import {
   SOL_BRIDGE_ADDRESS,
   SOL_TOKEN_BRIDGE_ADDRESS,
   TERRA_TOKEN_BRIDGE_ADDRESS,
-  KARURA_RPC_URL,
 } from "../utils/consts";
 import { getKaruraGasParams } from "../utils/karura";
 import parseError from "../utils/parseError";
 import { signSendAndConfirm } from "../utils/solana";
 import { postWithFees } from "../utils/terra";
 import useAttestSignedVAA from "./useAttestSignedVAA";
-
-async function getKaruraGasParams(): Promise<{
-  gasPrice: number,
-  gasLimit: number,
-}> {
-  const gasLimit = 21000000;
-  const storageLimit = 64001;
-  const res = (await axios.post(KARURA_RPC_URL, {
-    id: 0,
-    jsonrpc: '2.0',
-    method: "eth_getEthGas",
-    params: [gasLimit, storageLimit],
-  })).data.result;
-
-  return {
-    gasLimit: parseInt(res.gasLimit, 16),
-    gasPrice: parseInt(res.gasPrice, 16),
-  };
-};
 
 async function evm(
   dispatch: any,
@@ -79,12 +58,6 @@ async function evm(
   shouldUpdate: boolean
 ) {
   dispatch(setIsCreating(true));
-
-  const txGasOverrides = chainId === CHAIN_ID_KARURA
-    ? await getKaruraGasParams()
-    : {};
-
-  console.log('custom gas:', txGasOverrides);
 
   try {
     // Karura and Acala need gas params for contract deploys
